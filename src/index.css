@@ -5,3 +5,6 @@ body {
   background: linear-gradient(to right, #349c82, #06ed91);
 }
 
+button {
+  cursor: pointer;
+}
