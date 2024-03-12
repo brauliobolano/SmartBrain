@@ -16,7 +16,7 @@ const Logo = () => {
     };
 
     return (
-        <div className='ma4 mt0'>
+        <div className='ma4 mt0' style={{zIndex: "9", position: 'relative'}}>
             <Tilt className=' Tilt br-2 shadow-2' options={defaultOptions} style={{ height: 150, width: 150 }}>
                 <div className='Tilt-inner pa3'>
                     <img width={200} alt='logo' src={brain}/>
