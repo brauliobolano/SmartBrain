@@ -15,41 +15,39 @@ import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSl
 
 /* import Clarifai from 'clarifai'; */ // No longer needed as we are using the fetch API to make requests to the Clarifai API instead of the Clarifai package
 
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';  
-const returnClarifyJsonRequest = (input) => {
+ const returnClarifyJsonRequest = (input) => {
   const PAT = '519a6a028f9e42459f6bd406afcad694';
-const USER_ID = 'braulio-bolano';       
-const APP_ID = 'smart-brain';
-  
-const IMAGE_URL = input; // use the input state variable as the image URL
+    const USER_ID = 'braulio-bolano';       
+    const APP_ID = 'smart-brain';
+      
+    const IMAGE_URL = input; // use the input state variable as the image URL
 
-const raw = JSON.stringify({
-"user_app_id": {
-  "user_id": USER_ID,
-  "app_id": APP_ID
-},
-"inputs": [
-  {
-    "data": {
-      "image": {
-        "url": IMAGE_URL
+    const raw = JSON.stringify({
+    "user_app_id": {
+      "user_id": USER_ID,
+      "app_id": APP_ID
+    },
+    "inputs": [
+      {
+        "data": {
+          "image": {
+            "url": IMAGE_URL
+          }
+        }
       }
-    }
-  }
-]
-});
+    ]
+    });
 
-const requestOptions = {
-method: 'POST',
-headers: {
-  'Accept': 'application/json',
-  'Authorization': 'Key ' + PAT
-},
-body: raw
-};
+    const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Key ' + PAT
+    },
+    body: raw
+    };
 
-return requestOptions;
+    return requestOptions;
 };
 
 function App() {
@@ -66,7 +64,7 @@ function App() {
 /*     setImageUrl(input);
     console.log(imageUrl); */
 
-  fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", returnClarifyJsonRequest(input))
+  fetch("https://api.clarifai.com/v2/models/face-detection/outputs", returnClarifyJsonRequest(input))
     .then(response => response.json())
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
