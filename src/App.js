@@ -4,6 +4,7 @@ import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -54,22 +55,49 @@ function App() {
 
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [box, setBox] = useState({});
+/*   const [inputValue, setInputValue] = useState('');  */
 
+  const calculateFaceLocation = (data) => {
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
+  };
+
+  const displayFaceBox = (box) => {
+    console.log(box);
+    setBox(box);
+  };
+
+  
   const onInputChange = (event) => {
     console.log(event.target.value);
     setInput(event.target.value);
   };
   const onButtonSubmit = () => {
     console.log('click');
-/*     setImageUrl(input);
-    console.log(imageUrl); */
+    setImageUrl(input);
+    console.log(imageUrl);
 
   fetch("https://api.clarifai.com/v2/models/face-detection/outputs", returnClarifyJsonRequest(input))
     .then(response => response.json())
+    .then(response => displayFaceBox(calculateFaceLocation(response)))
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
   };
 
+  const deleteImage = () => {
+    setImageUrl('');
+    setBox({});
+    setInput('');
+  };
 
 
   const [init, setInit] = useState(false);
@@ -185,7 +213,10 @@ function App() {
       <ImageLinkForm 
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
+        deleteImage={deleteImage}
+        input = {input}
         />
+      <FaceRecognition imageUrl={imageUrl} box={box}/>
 
       </>
       );
