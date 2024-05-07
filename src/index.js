@@ -1,7 +1,10 @@
+// The Main component is rendered here instead of the App component.
+// This is because the Main component wraps both the App and ParticlesComponent.
+// By rendering the Main component, we ensure that the ParticlesComponent is not affected by state changes in the App component.
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import Main from './Main';
 import reportWebVitals from './reportWebVitals';
 
 import 'tachyons'; // CSS library for styling
@@ -9,7 +12,7 @@ import 'tachyons'; // CSS library for styling
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Main />
   </React.StrictMode>
 );
 
